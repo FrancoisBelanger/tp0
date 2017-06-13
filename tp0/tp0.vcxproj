@@ -146,6 +146,7 @@
     <ClCompile Include="ZoneTransit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="transform.h" />
     <ClInclude Include="ZoneTransit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
