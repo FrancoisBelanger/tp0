@@ -40,18 +40,20 @@ int main(int argc, const char * argv[])
 	//TODO: to finish
 	threads.emplace_back(thread());
 
+	//FIXME placer ailleur
+	KEYWORDS;
 	//Traitement sequentiel
 	for (int j = 0; j < 10; ++j)
 	{
 		auto before = chrono::high_resolution_clock::now();
 
 		for (int i = 0; i < 1000; ++i)
-			t5(fname, t4(t3(t2(t1(t0(fname))))), false);
+			t5(fname, t4(t3(t2(t1(t0(fname)), keywords))), false);
 
-		cout << "total: " << duration_cast<milliseconds>(high_resolution_clock::now() - before).count() << endl;
+		cout << "total" << j+1 << ": " << duration_cast<milliseconds>(high_resolution_clock::now() - before).count() << endl;
 	}
 
-	for_each(begin(threads), end(threads), [](thread t) { t.join(); });
+	//for_each(begin(threads), end(threads), [](thread t) { t.join(); });
 
 	//cout << "t0 " << totalT0.count() << endl;
 	//cout << "t1 " << totalT1.count() << endl;

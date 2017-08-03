@@ -1,15 +1,36 @@
+//
+//  Francois Belanger 94 245 437
+//
+//  transform.h
+//  tp0
+//
+//  Created by François Bélanger on 17-05-15.
+//  Copyright © 2017. All rights reserved.
+//
+
 #ifndef _TRANSFORM_H_
 
 #include <fstream>
 #include <sstream>
-#include <set>
+//FIXME dev test
+//#include <set>
+#include <unordered_set>
 
-#define KEYWORDS std::set<std::string> keywords = { "alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "atomic_commit", "atomic_noexcept", "auto", "bitand", "bitor", "bool", "break", "case",\
+//FIXME dev test
+//#define KEYWORDS std::set<std::string> keywords = { "alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "atomic_commit", "atomic_noexcept", "auto", "bitand", "bitor", "bool", "break", "case",\
+//"catch", "char", "char16_t", "char32_t", "class", "compl", "concept", "const", "constexpr", "const_cast", "continue", "decltype", "default", "delete", "do", "double", "dynamic_cast", "else",\
+//"enum", "explicit", "export", "extern", "false", "float", "for", "friend", "goto", "if", "inline", "int", "import", "long", "module", "mutable", "namespace", "new", "noexcept", "not", "not_eq",\
+//"nullptr", "operator", "or", "or_eq", "private", "protected", "public", "register", "reinterpret_cast", "requires", "return", "short", "unsigned", "signed", "sizeof", "static", "static_assert",\
+//"static_cast", "struct", "switch", "synchronized", "template", "this", "thread_local", "throw", "true", "try", "typedef", "typeid", "typename", "union", "using", "virtual", "void", "volatile",\
+//"wchar_t", "while", "xor", "xor_eq" };
+
+#define KEYWORDS std::unordered_set<std::string> keywords = { "alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "atomic_commit", "atomic_noexcept", "auto", "bitand", "bitor", "bool", "break", "case",\
 "catch", "char", "char16_t", "char32_t", "class", "compl", "concept", "const", "constexpr", "const_cast", "continue", "decltype", "default", "delete", "do", "double", "dynamic_cast", "else",\
 "enum", "explicit", "export", "extern", "false", "float", "for", "friend", "goto", "if", "inline", "int", "import", "long", "module", "mutable", "namespace", "new", "noexcept", "not", "not_eq",\
 "nullptr", "operator", "or", "or_eq", "private", "protected", "public", "register", "reinterpret_cast", "requires", "return", "short", "unsigned", "signed", "sizeof", "static", "static_assert",\
 "static_cast", "struct", "switch", "synchronized", "template", "this", "thread_local", "throw", "true", "try", "typedef", "typeid", "typename", "union", "using", "virtual", "void", "volatile",\
-"wchar_t", "while", "xor", "xor_eq" };
+"wchar_t", "while", "xor", "xor_eq" }
+
 
 //TODO: passer au memory map
 //milliseconds totalT0 = milliseconds{ 0 };
@@ -57,13 +78,14 @@ std::string t1(std::string& toClean)
 }
 
 //milliseconds totalT2 = milliseconds{ 0 };
-std::string t2(std::string& inLine)
+std::string t2(std::string& inLine, const std::unordered_set<std::string>& keywords)
 {
 	//auto before = chrono::high_resolution_clock::now();
 	std::string spanOpen = "<span id=\"t2\">";
 	std::string spanClose = "</span>";
 	std::string word;
-	KEYWORDS;
+	//FIXME dev test
+	//KEYWORDS;
 
 	std::istringstream i{ inLine };
 	std::ostringstream o;
