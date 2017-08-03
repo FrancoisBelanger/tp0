@@ -167,6 +167,14 @@ std::string t4(std::string& inFile)
 	return inFile;
 }
 
+
+//FIXME dev test
+//#define HEADER_1 std::string{"<!DOCTYPE html>\n<html>\n<head>\n<title>"}
+//#define HEADER_2 std::string{"</title>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"tp0.css\">\n</head>\n<body>\n<pre>"}
+//#define FOOTER std::string{"</pre>\n</body>\n</html>"}
+std::string HEADER_1{ "<!DOCTYPE html>\n<html>\n<head>\n<title>" };
+std::string	HEADER_2{ "</title>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"tp0.css\">\n</head>\n<body>\n<pre>" };
+std::string FOOTER{"</pre>\n</body>\n</html>"};
 //TODO: faire le menage dans les parametres
 //milliseconds totalT5 = milliseconds{ 0 };
 void t5(const std::string& fname, const std::string& data, bool concurrent)
@@ -175,16 +183,18 @@ void t5(const std::string& fname, const std::string& data, bool concurrent)
 	std::ofstream file{ fname + (concurrent ? ".parallele.html" : ".sequential.html") };
 
 	//header
-	file << "<!DOCTYPE html>\n<html>\n<head>\n";
-	file << "<title>" << fname << "</title>\n";
-	file << "<link rel=\"stylesheet\" type=\"text/css\" href=\"tp0.css\">\n";
-	file << "</head>\n<body>\n<pre>";
+	//file << "<!DOCTYPE html>\n<html>\n<head>\n";
+	//file << "<title>" << fname << "</title>\n";
+	//file << "<link rel=\"stylesheet\" type=\"text/css\" href=\"tp0.css\">\n";
+	//file << "</head>\n<body>\n<pre>";
+	file << HEADER_1;
+	file << fname << HEADER_2;
 
 	//decorated lines
 	file << data;
 
 	//end tag
-	file << "</pre>\n</body>\n</html>";
+	file << FOOTER;
 
 	//totalT5 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
 }

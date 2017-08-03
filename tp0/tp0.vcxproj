@@ -146,6 +146,7 @@
     <ClCompile Include="ZoneTransit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Pipeline.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="ZoneTransit.h" />
   </ItemGroup>

@@ -23,7 +23,8 @@ using namespace chrono;
 
 int main(int argc, const char * argv[])
 {
-	auto before = chrono::high_resolution_clock::now();
+	int numberOfRepeat = 10;
+	int numberOfFiles = 1000;
 	string fname = "main.cpp";
 	vector<thread> threads;
 
@@ -37,21 +38,26 @@ int main(int argc, const char * argv[])
 		//TODO: initialiser un vecteur de nom de fichier
 	}
 
-	//TODO: to finish
-	threads.emplace_back(thread());
-
 	//FIXME placer ailleur
 	KEYWORDS;
 	//Traitement sequentiel
-	for (int j = 0; j < 10; ++j)
-	{
-		auto before = chrono::high_resolution_clock::now();
 
-		for (int i = 0; i < 1000; ++i)
+	high_resolution_clock::time_point before, after;
+	for (int j = 0; j < numberOfRepeat; ++j)
+	{
+		before = high_resolution_clock::now();
+
+		for (int i = 0; i < numberOfFiles; ++i)
 			t5(fname, t4(t3(t2(t1(t0(fname)), keywords))), false);
 
-		cout << "total" << j+1 << ": " << duration_cast<milliseconds>(high_resolution_clock::now() - before).count() << endl;
+		after = high_resolution_clock::now();
+		cout << "total" << j+1 << ": " << duration_cast<milliseconds>(after - before).count() << endl;
 	}
+
+	//Traitement parallele
+	//TODO: to finish
+	threads.emplace_back(thread());
+	//threads.push_back(thread(BeginThread(fileNames.size(), *z[0], cv, mut), [&fileNames](int index) -> string { return f0(fileNames[index]); }));
 
 	//for_each(begin(threads), end(threads), [](thread t) { t.join(); });
 
