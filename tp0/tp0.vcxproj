@@ -143,12 +143,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ZoneTransit.cpp" />
+    <ClCompile Include="zone_transit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="transform.h" />
-    <ClInclude Include="ZoneTransit.h" />
+    <ClInclude Include="zone_transit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

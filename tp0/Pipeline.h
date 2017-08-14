@@ -11,13 +11,13 @@
 #ifndef _PIPELINE_H_
 #define _PIPELINE_H_
 
+#include "zone_transit.h"
+
 class Pipeline
 {
 	//int nbFiles;
-	//ZoneTransit& next;
-
-	//mutex& mut;
-	//condition_variable& cv;
+	ZoneTransit* prev;
+	ZoneTransit* next;
 
 public:
 	//Pipeline(int nbFiles, ZoneTransit& next, condition_variable& cv, mutex& mut)
@@ -33,9 +33,9 @@ public:
 		unique_lock<mutex> lock(mut);
 		cv.wait(lock);
 
-		for (int fileIndex = 0; fileIndex < nbFiles; ++fileIndex)
+		for (int i = 0; i < nbFiles; ++i)
 		{
-			next.put(f(fileIndex));
+			next->enqueue(f(prev->deque()));
 		}
 	}
 /*

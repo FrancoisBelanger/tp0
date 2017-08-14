@@ -17,6 +17,7 @@
 #include <algorithm>
 
 #include "transform.h"
+#include "zone_transit.h"
 
 using namespace std;
 using namespace chrono;

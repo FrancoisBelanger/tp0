@@ -18,18 +18,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZoneTransit.cpp">
+    <ClCompile Include="zone_transit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ZoneTransit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Pipeline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zone_transit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

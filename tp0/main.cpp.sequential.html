@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>main.cpp</title>
+<link rel="stylesheet" type="text/css" href="tp0.css">
+</head>
+<body>
+<pre><span id="t3">//
+</span><span id="t3">//  Francois Belanger 94 245 437
+</span><span id="t3">//
+</span><span id="t3">//  main.cpp
+</span><span id="t3">//  tp0
+</span><span id="t3">//
+</span><span id="t3">//  Created by François Bélanger on 17-05-15.
+</span><span id="t3">//  Copyright © 2017. All rights reserved.
+</span><span id="t3">//
+</span>
+<span id="t3">//TODO: fbr to remove
+</span><span style = 'color:purple'>#include</span> &lt;iostream&gt;
+
+<span style = 'color:purple'>#include</span> &lt;vector&gt;
+<span style = 'color:purple'>#include</span> &lt;chrono&gt;
+<span style = 'color:purple'>#include</span> &lt;thread&gt;
+<span style = 'color:purple'>#include</span> &lt;algorithm&gt;
+
+<span style = 'color:purple'>#include</span> "transform.h"
+<span style = 'color:purple'>#include</span> "zone_transit.h"
+
+<span id="t2">using</span> <span id="t2">namespace</span> std;
+<span id="t2">using</span> <span id="t2">namespace</span> chrono;
+
+<span id="t2">int</span> main(int argc, <span id="t2">const</span> <span id="t2">char</span> * argv[])
+{
+	<span id="t2">int</span> numberOfRepeat = 10;
+	<span id="t2">int</span> numberOfFiles = 1000;
+	string fname = "main.cpp";
+	vector&lt;thread&gt; threads;
+
+	<span id="t2">if</span> (argc &gt;= 2)
+	{
+		<span id="t3">//TODO: initialiser un vecteur avec tout les nom de fichier
+</span>		fname = argv[1];
+	}
+	<span id="t2">else</span>
+	{
+		<span id="t3">//TODO: initialiser un vecteur de nom de fichier
+</span>	}
+
+	<span id="t3">//FIXME placer ailleur
+</span>	KEYWORDS;
+	<span id="t3">//Traitement sequentiel
+</span>
+	high_resolution_clock::time_point before, after;
+	<span id="t2">for</span> (int j = 0; j &lt; numberOfRepeat; ++j)
+	{
+		before = high_resolution_clock::now();
+
+		<span id="t2">for</span> (int i = 0; i &lt; numberOfFiles; ++i)
+			t5(fname, t4(t3(t2(t1(t0(fname)), keywords))), false);
+
+		after = high_resolution_clock::now();
+		cout &lt;&lt; "total" &lt;&lt; j+1 &lt;&lt; ": " &lt;&lt; duration_cast&lt;milliseconds&gt;(after - before).count() &lt;&lt; endl;
+	}
+
+	<span id="t3">//Traitement parallele
+</span>	<span id="t3">//TODO: to finish
+</span>	threads.emplace_back(thread());
+	<span id="t3">//threads.push_back(thread(BeginThread(fileNames.size(), *z[0], cv, mut), [&amp;fileNames](int index) -&gt; string { <span id="t2">return</span> f0(fileNames[index]); }));
+</span>
+	<span id="t3">//for_each(begin(threads), end(threads), [](thread t) { t.join(); });
+</span>
+	<span id="t3">//cout &lt;&lt; "t0 " &lt;&lt; totalT0.count() &lt;&lt; endl;
+</span>	<span id="t3">//cout &lt;&lt; "t1 " &lt;&lt; totalT1.count() &lt;&lt; endl;
+</span>	<span id="t3">//cout &lt;&lt; "t2 " &lt;&lt; totalT2.count() &lt;&lt; endl;
+</span>	<span id="t3">//cout &lt;&lt; "t3 " &lt;&lt; totalT3.count() &lt;&lt; endl;
+</span>	<span id="t3">//cout &lt;&lt; "t4 " &lt;&lt; totalT4.count() &lt;&lt; endl;
+</span>	<span id="t3">//cout &lt;&lt; "t5 " &lt;&lt; totalT5.count() &lt;&lt; endl;
+</span>	<span id="t2">char</span> a;
+	cin &gt;&gt; a;
+}
+</pre>
+</body>
+</html>
