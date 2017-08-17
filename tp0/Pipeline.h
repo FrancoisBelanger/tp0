@@ -13,6 +13,38 @@
 
 #include "zone_transit.h"
 
+//FIXME to rename
+//FIXME to integrate
+class BeginThread
+{
+	int nbFiles;
+	ZoneTransit& next;
+
+	std::mutex& mut;
+	std::condition_variable cv;
+
+public:
+
+	BeginThread(ZoneTransit& next, std::condition_variable& cv, std::mutex& mut)
+		: nbFiles(nbFiles)
+		, next(next)
+		, cv(cv)
+		, mut(mut)
+	{}
+
+	template<class F>
+	void operator()(F f)
+	{
+		unique_lock<mutex> lock(mut);
+		cv.wait(lock);
+
+		for (int fileIndex = 0; fileIndex < nbFiles; ++fileIndex)
+		{
+			next.put(f(fileIndex));
+		}
+	}
+};
+
 class Pipeline
 {
 	//int nbFiles;

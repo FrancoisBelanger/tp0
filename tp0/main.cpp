@@ -57,7 +57,7 @@ int main(int argc, const char * argv[])
 
 	//Traitement parallele
 	//TODO: to finish
-	threads.emplace_back(thread());
+	threads.emplace_back(thread(BeginThread(fileNames.size()));
 	//threads.push_back(thread(BeginThread(fileNames.size(), *z[0], cv, mut), [&fileNames](int index) -> string { return f0(fileNames[index]); }));
 
 	//for_each(begin(threads), end(threads), [](thread t) { t.join(); });
