@@ -17,30 +17,20 @@
 //FIXME to integrate
 class BeginThread
 {
-	int nbFiles;
 	ZoneTransit& next;
-
-	std::mutex& mut;
-	std::condition_variable cv;
 
 public:
 
-	BeginThread(ZoneTransit& next, std::condition_variable& cv, std::mutex& mut)
-		: nbFiles(nbFiles)
-		, next(next)
-		, cv(cv)
-		, mut(mut)
+	BeginThread(ZoneTransit& next)
+		: next(next)
 	{}
 
 	template<class F>
 	void operator()(F f)
 	{
-		unique_lock<mutex> lock(mut);
-		cv.wait(lock);
-
-		for (int fileIndex = 0; fileIndex < nbFiles; ++fileIndex)
+		//for (int fileIndex = 0; fileIndex < nbFiles; ++fileIndex)
 		{
-			next.put(f(fileIndex));
+			next.enqueue(f(fileIndex));
 		}
 	}
 };
@@ -48,40 +38,44 @@ public:
 class Pipeline
 {
 	//int nbFiles;
-	ZoneTransit* prev;
-	ZoneTransit* next;
+	ZoneTransit& prev;
+	ZoneTransit& next;
 
 public:
-	//Pipeline(int nbFiles, ZoneTransit& next, condition_variable& cv, mutex& mut)
-	//	: nbFiles(nbFiles)
-	//	, next(next)
-	//	, cv(cv)
-	//	, mut(mut)
-	//{}
+	Pipeline(ZoneTransit& prev, ZoneTransit& next): prev(prev) ,next(next){}
 
 	template<class F>
 	void operator() (F f)
 	{
-		unique_lock<mutex> lock(mut);
-		cv.wait(lock);
-
-		for (int i = 0; i < nbFiles; ++i)
+		//FIXME inutile
+		//for (int i = 0; i < nbFiles; ++i)
 		{
 			next->enqueue(f(prev->deque()));
 		}
 	}
-/*
-	void operator()(F f)
-	{
-	unique_lock<mutex> lock(mut);
-	cv.wait(lock);
 
-	for (int fileIndex = 0; fileIndex < nbFiles; ++fileIndex)
-	{
-	next.put(f(fileIndex));
-	}
-}*/
 
 }; //struct Pipeline
 
+//FIXME to rename
+//FIXME to integrate
+class EndThread
+{
+	ZoneTransit& prev;
+
+public:
+
+	EndThread(ZoneTransit& prev)
+		: prev(prev)
+	{}
+
+	template<class F>
+	void operator()(F f)
+	{
+		for (int fileIndex = 0; fileIndex < nbFiles; ++fileIndex)
+		{
+			f(fileIndex, prev.get());
+		}
+	}
+};
 #endif //_PIPELINE_H

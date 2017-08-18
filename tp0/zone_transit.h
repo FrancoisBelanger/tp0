@@ -9,6 +9,7 @@
 //
 
 #ifndef _ZONE_TRANSIT_H_
+#define _ZONE_TRANSIT_H_
 
 #include <string>
 #include <deque>
