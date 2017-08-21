@@ -32,7 +32,6 @@
 "static_cast", "struct", "switch", "synchronized", "template", "this", "thread_local", "throw", "true", "try", "typedef", "typeid", "typename", "union", "using", "virtual", "void", "volatile",\
 "wchar_t", "while", "xor", "xor_eq" }
 
-
 //TODO: passer au memory map
 //milliseconds totalT0 = milliseconds{ 0 };
 std::string t0(const std::string fname)
@@ -43,6 +42,8 @@ std::string t0(const std::string fname)
 	std::string line;
 	std::string backslach_n{ '\n' };
 
+	//TODO a reactiver
+	//ss << fname << backslach_n;
 	//TODO: fbr utiliser des iterateurs de stream
 	while (getline(file, line))
 		ss << line << backslach_n;

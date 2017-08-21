@@ -25,16 +25,20 @@
 
 <span style = 'color:purple'>#include</span> "transform.h"
 <span style = 'color:purple'>#include</span> "zone_transit.h"
+<span style = 'color:purple'>#include</span> "Pipeline.h"
 
 <span id="t2">using</span> <span id="t2">namespace</span> std;
 <span id="t2">using</span> <span id="t2">namespace</span> chrono;
 
 <span id="t2">int</span> main(int argc, <span id="t2">const</span> <span id="t2">char</span> * argv[])
 {
+	<span id="t3">//FIXME remplacer par un <span id="t2">enum</span>
+</span>	<span id="t2">const</span> <span id="t2">int</span> nbStep = 6;
 	<span id="t2">int</span> numberOfRepeat = 10;
 	<span id="t2">int</span> numberOfFiles = 1000;
 	string fname = "main.cpp";
 	vector&lt;thread&gt; threads;
+	vector&lt;ZoneTransit&gt;zoneTransit(nbStep);
 
 	<span id="t2">if</span> (argc &gt;= 2)
 	{
@@ -59,13 +63,18 @@
 			t5(fname, t4(t3(t2(t1(t0(fname)), keywords))), false);
 
 		after = high_resolution_clock::now();
-		cout &lt;&lt; "total" &lt;&lt; j+1 &lt;&lt; ": " &lt;&lt; duration_cast&lt;milliseconds&gt;(after - before).count() &lt;&lt; endl;
+		cout &lt;&lt; "total" &lt;&lt; j + 1 &lt;&lt; ": " &lt;&lt; duration_cast&lt;milliseconds&gt;(after - before).count() &lt;&lt; endl;
 	}
 
 	<span id="t3">//Traitement parallele
 </span>	<span id="t3">//TODO: to finish
-</span>	threads.emplace_back(thread());
-	<span id="t3">//threads.push_back(thread(BeginThread(fileNames.size(), *z[0], cv, mut), [&amp;fileNames](int index) -&gt; string { <span id="t2">return</span> f0(fileNames[index]); }));
+</span>	vector&lt;string&gt; filenames(numberOfRepeat, fname);
+	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[0], zoneTransit[1]), [](string fName) -&gt; string { <span id="t2">return</span> t0(fName); }));
+</span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[1], zoneTransit[2]), [](string data) -&gt; string { <span id="t2">return</span> t1(data); }));
+</span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[2], zoneTransit[3]), [&amp;keywords](string data) -&gt; string { <span id="t2">return</span> t2(data, keywords); }));
+</span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[3], zoneTransit[4]), [](string data) -&gt; string { <span id="t2">return</span> t3(data); }));
+</span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[4], zoneTransit[5]), [](string data) -&gt; string { <span id="t2">return</span> t4(data); }));
+</span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[5], zoneTransit[6]), [](string data) { <span id="t2">return</span> t5("test.html", data, true); }));
 </span>
 	<span id="t3">//for_each(begin(threads), end(threads), [](thread t) { t.join(); });
 </span>

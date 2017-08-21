@@ -47,11 +47,7 @@ public:
 	template<class F>
 	void operator() (F f)
 	{
-		//FIXME inutile
-		//for (int i = 0; i < nbFiles; ++i)
-		{
-			next->enqueue(f(prev->deque()));
-		}
+		next.enqueue(f(prev.deque()));
 	}
 
 

@@ -25,12 +25,13 @@ using namespace chrono;
 
 int main(int argc, const char * argv[])
 {
-	const int nbStep = 5;
+	//FIXME remplacer par un enum
+	const int nbStep = 6;
 	int numberOfRepeat = 10;
 	int numberOfFiles = 1000;
 	string fname = "main.cpp";
 	vector<thread> threads;
-	vector<ZoneTransit>zoneTransit(nbStep - 1);
+	vector<ZoneTransit>zoneTransit(nbStep+1);
 
 	if (argc >= 2)
 	{
@@ -61,8 +62,12 @@ int main(int argc, const char * argv[])
 	//Traitement parallele
 	//TODO: to finish
 	vector<string> filenames(numberOfRepeat, fname);
-	threads.emplace_back(thread(BeginThread(zoneTransit[0])), [&filenames](int index) -> string { return t0(filenames[index]); });
-	//threads.push_back(thread(BeginThread(fileNames.size(), *z[0], cv, mut), [&fileNames](int index) -> string { return f0(fileNames[index]); }));
+	threads.emplace_back(thread(Pipeline(zoneTransit[0], zoneTransit[1]), [](string fName) -> string { return t0(fName); }));
+	threads.emplace_back(thread(Pipeline(zoneTransit[1], zoneTransit[2]), [](string data) -> string { return t1(data); }));
+	threads.emplace_back(thread(Pipeline(zoneTransit[2], zoneTransit[3]), [&keywords](string data) -> string { return t2(data, keywords); }));
+	threads.emplace_back(thread(Pipeline(zoneTransit[3], zoneTransit[4]), [](string data) -> string { return t3(data); }));
+	threads.emplace_back(thread(Pipeline(zoneTransit[4], zoneTransit[5]), [](string data) -> string { return t4(data); }));
+	//threads.emplace_back(thread(Pipeline(zoneTransit[5], zoneTransit[6]), [](string data) { return t5("test.html", data, true); }));
 
 	//for_each(begin(threads), end(threads), [](thread t) { t.join(); });
 
