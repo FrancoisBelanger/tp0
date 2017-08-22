@@ -55,28 +55,51 @@ std::string t0(const std::string fname)
 //TODO: passer par mouvement?
 //TODO: retour par mouvement?
 //milliseconds totalT1 = milliseconds{ 0 };
+//std::string t1(std::string& toClean)
+//{
+//	//auto before = chrono::high_resolution_clock::now();
+//	//TODO: a remanier.
+//	for (std::string::size_type i = 0; (i = toClean.find("&", i)) != std::string::npos;)
+//	{
+//		toClean.replace(i, std::string{ "&" }.length(), "&amp;");
+//		i += std::string{ "&amp;" }.length();
+//	}
+//	for (std::string::size_type i = 0; (i = toClean.find("<", i)) != std::string::npos;)
+//	{
+//		toClean.replace(i, std::string{ "<" }.length(), "&lt;");
+//		i += std::string{ "&lt;" }.length();
+//	}
+//	for (std::string::size_type i = 0; (i = toClean.find(">", i)) != std::string::npos;)
+//	{
+//		toClean.replace(i, std::string{ ">" }.length(), "&gt;");
+//		i += std::string{ "&gt;" }.length();
+//	}
+//
+//	//totalT1 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
+//	return toClean;
+//}
 std::string t1(std::string& toClean)
 {
 	//auto before = chrono::high_resolution_clock::now();
 	//TODO: a remanier.
-	for (std::string::size_type i = 0; (i = toClean.find("&", i)) != std::string::npos;)
+	std::ostringstream out;
+	std::string amp{"&amp"};
+	std::string less{"&lt"};
+	std::string more{ "&gt" };
+	for (auto x : toClean)
 	{
-		toClean.replace(i, std::string{ "&" }.length(), "&amp;");
-		i += std::string{ "&amp;" }.length();
-	}
-	for (std::string::size_type i = 0; (i = toClean.find("<", i)) != std::string::npos;)
-	{
-		toClean.replace(i, std::string{ "<" }.length(), "&lt;");
-		i += std::string{ "&lt;" }.length();
-	}
-	for (std::string::size_type i = 0; (i = toClean.find(">", i)) != std::string::npos;)
-	{
-		toClean.replace(i, std::string{ ">" }.length(), "&gt;");
-		i += std::string{ "&gt;" }.length();
+		if (x == '&')
+			out << amp;
+		else if (x == '<')
+			out << less;
+		else if (x == '>')
+			out << more;
+		else
+			out << x;
+
 	}
 
-	//totalT1 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
-	return toClean;
+	return out.str();
 }
 
 //milliseconds totalT2 = milliseconds{ 0 };
