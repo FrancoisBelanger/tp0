@@ -103,14 +103,44 @@ std::string t1(std::string& toClean)
 }
 
 //milliseconds totalT2 = milliseconds{ 0 };
+//std::string t2(std::string& inLine, const std::unordered_set<std::string>& keywords)
+//{
+//	//auto before = chrono::high_resolution_clock::now();
+//	const std::string spanOpen = "<span id=\"t2\">";
+//	const std::string spanClose = "</span>";
+//	std::string word;
+//
+//	std::istringstream i{ inLine };
+//	std::ostringstream o;
+//	bool tag = false;
+//
+//	auto lastIdx = i.tellg();
+//	while (i >> word)
+//	{
+//		//cout << i.tellg() - lastIdx << " " << (i.tellg() - lastIdx) - word.length() << endl;
+//		//ajouter les char manquant
+//		o << inLine.substr(lastIdx, (i.tellg() - lastIdx) - word.length());
+//		if (keywords.find(word) != end(keywords))
+//		{
+//			o << spanOpen << word << spanClose;
+//		}
+//		else
+//		{
+//			o << word;
+//		}
+//		lastIdx = i.tellg();
+//	}
+//	o << '\n';
+//
+//	//totalT2 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
+//	return o.str();
+//}
 std::string t2(std::string& inLine, const std::unordered_set<std::string>& keywords)
 {
 	//auto before = chrono::high_resolution_clock::now();
-	std::string spanOpen = "<span id=\"t2\">";
-	std::string spanClose = "</span>";
+	const std::string spanOpen = "<span id=\"t2\">";
+	const std::string spanClose = "</span>";
 	std::string word;
-	//FIXME dev test
-	//KEYWORDS;
 
 	std::istringstream i{ inLine };
 	std::ostringstream o;
