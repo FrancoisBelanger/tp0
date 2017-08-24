@@ -127,95 +127,80 @@ std::string t2(std::string& inLine, const std::unordered_set<std::string>& keywo
 }
 
 //TODO: a refaire
-////milliseconds totalT3 = milliseconds{ 0 };
-//std::string t3(std::string& inFile)
-//{
-//	//auto before = chrono::high_resolution_clock::now();
-//
-//	std::string spanOpen = "<span id=\"t3\">";
-//	std::string spanClose = "</span>";
-//	for (std::string::size_type i = 0; (i = inFile.find("//", i)) != std::string::npos;)
-//	{
-//		inFile.insert(i, spanOpen);
-//		i += spanOpen.length();
-//		auto end = inFile.find("\n", i);
-//		i = end;
-//		inFile.insert(end + 1, spanClose);
-//		i += spanClose.length();
-//	}
-//	for (std::string::size_type i = 0; (i = inFile.find("/*", i)) != std::string::npos;)
-//	{
-//		inFile.insert(i, spanOpen);
-//		i += spanOpen.length();
-//		auto end = inFile.find("*/", i);
-//		i = end;
-//		inFile.insert(end + 2, spanClose);
-//		i += spanClose.length();
-//	}
-//
-//
-//	//totalT3 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
-//	return inFile;
-//}
 //milliseconds totalT3 = milliseconds{ 0 };
 std::string t3(std::string& inFile)
 {
 	//auto before = chrono::high_resolution_clock::now();
 
-	std::string spanOpen = "<span id=\"t3\">";
-	std::string spanClose = "</span>";
+	//std::string spanOpen = "<span id=\"t3\">";
+	//std::string spanClose = "</span>";
 
-	std::string word;
-	std::istringstream i{ inFile };
-	std::ostringstream o;
-	int lookAhead = i.peek();
+	//std::string word;
+	//std::istringstream i{ inFile };
+	//std::ostringstream o;
+	//int lookAhead = i.peek();
 
-	while (lookAhead != EOF)
-	{
-		while (lookAhead != '/' && lookAhead != EOF)
-		{
-			word.push_back(i.get());
-			lookAhead = i.peek();
-		}
-		o << word;
-		word.clear();
-		word.push_back(i.get());
-		lookAhead = i.peek();
+	//while (lookAhead != EOF)
+	//{
+	//	while (lookAhead != '/' && lookAhead != EOF)
+	//	{
+	//		word.push_back(i.get());
+	//		lookAhead = i.peek();
+	//	}
+	//	o << word;
+	//	word.clear();
+	//	word.push_back(i.get());
+	//	lookAhead = i.peek();
 
-		if (lookAhead == '/')
-		{
-			word = spanOpen + word;
-			while (lookAhead != '\n' && lookAhead != EOF)
-			{
-				word.push_back(i.get());
-				lookAhead = i.peek();
-			}
-			word += spanClose;
-			o << word;
-			word.clear();
-		}
-		else if (lookAhead == '*')
-		{
-			word = spanOpen + word;
-			while (lookAhead != '/' && lookAhead != EOF)
-			{
-				if (word.back() == '*')
-				{
-					word.push_back(i.get());
-					break;
-				}
-				word.push_back(i.get());
-				lookAhead = i.peek();
-			}
-			word += spanClose;
-			o << word;
-			word.clear();
-		}
-		lookAhead = i.peek();
-	}
+	//	if (lookAhead == '/')
+	//	{
+	//		word = spanOpen + word;
+	//		while (lookAhead != '\n' && lookAhead != EOF)
+	//		{
+	//			word.push_back(i.get());
+	//			lookAhead = i.peek();
+	//		}
+	//		word += spanClose;
+	//		o << word;
+	//		word.clear();
+	//	}
+	//	else if (lookAhead == '*')
+	//	{
+	//		word = spanOpen + word;
+	//		while (lookAhead != '/' && lookAhead != EOF)
+	//		{
+	//			if (word.back() == '*')
+	//			{
+	//				word.push_back(i.get());
+	//				break;
+	//			}
+	//			word.push_back(i.get());
+	//			lookAhead = i.peek();
+	//		}
+	//		word += spanClose;
+	//		o << word;
+	//		word.clear();
+	//	}
+	//	lookAhead = i.peek();
+	//}
+
+	size_t curPos = 0;
+	size_t linePos =0,lineEnd = 0, blockPos = 0, blockEnd = inFile.find("*/", blockPos);
 
 	for (std::string::size_type i = 0; (i = inFile.find("//", i)) != std::string::npos;)
 	{
+		if (curPos >= linePos)
+		{
+			linePos = inFile.find("//", curPos);
+			inFile.find("\n", linePos);
+		}
+
+		if (curPos >= blockPos)
+		{
+			blockPos = inFile.find("/*", curPos);
+			blockEnd = inFile.find("*/", curPos);
+		}
+
 		inFile.insert(i, spanOpen);
 		i += spanOpen.length();
 		auto end = inFile.find("\n", i);
