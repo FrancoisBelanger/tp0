@@ -55,29 +55,6 @@ std::string t0(const std::string fname)
 //TODO: passer par mouvement?
 //TODO: retour par mouvement?
 //milliseconds totalT1 = milliseconds{ 0 };
-//std::string t1(std::string& toClean)
-//{
-//	//auto before = chrono::high_resolution_clock::now();
-//	//TODO: a remanier.
-//	for (std::string::size_type i = 0; (i = toClean.find("&", i)) != std::string::npos;)
-//	{
-//		toClean.replace(i, std::string{ "&" }.length(), "&amp;");
-//		i += std::string{ "&amp;" }.length();
-//	}
-//	for (std::string::size_type i = 0; (i = toClean.find("<", i)) != std::string::npos;)
-//	{
-//		toClean.replace(i, std::string{ "<" }.length(), "&lt;");
-//		i += std::string{ "&lt;" }.length();
-//	}
-//	for (std::string::size_type i = 0; (i = toClean.find(">", i)) != std::string::npos;)
-//	{
-//		toClean.replace(i, std::string{ ">" }.length(), "&gt;");
-//		i += std::string{ "&gt;" }.length();
-//	}
-//
-//	//totalT1 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
-//	return toClean;
-//}
 std::string t1(std::string& toClean)
 {
 	//auto before = chrono::high_resolution_clock::now();
@@ -98,43 +75,10 @@ std::string t1(std::string& toClean)
 			out << x;
 
 	}
-
+	//totalT1 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
 	return out.str();
 }
 
-//milliseconds totalT2 = milliseconds{ 0 };
-//std::string t2(std::string& inLine, const std::unordered_set<std::string>& keywords)
-//{
-//	//auto before = chrono::high_resolution_clock::now();
-//	const std::string spanOpen = "<span id=\"t2\">";
-//	const std::string spanClose = "</span>";
-//	std::string word;
-//
-//	std::istringstream i{ inLine };
-//	std::ostringstream o;
-//	bool tag = false;
-//
-//	auto lastIdx = i.tellg();
-//	while (i >> word)
-//	{
-//		//cout << i.tellg() - lastIdx << " " << (i.tellg() - lastIdx) - word.length() << endl;
-//		//ajouter les char manquant
-//		o << inLine.substr(lastIdx, (i.tellg() - lastIdx) - word.length());
-//		if (keywords.find(word) != end(keywords))
-//		{
-//			o << spanOpen << word << spanClose;
-//		}
-//		else
-//		{
-//			o << word;
-//		}
-//		lastIdx = i.tellg();
-//	}
-//	o << '\n';
-//
-//	//totalT2 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
-//	return o.str();
-//}
 std::string t2(std::string& inLine, const std::unordered_set<std::string>& keywords)
 {
 	//auto before = chrono::high_resolution_clock::now();
@@ -144,31 +88,75 @@ std::string t2(std::string& inLine, const std::unordered_set<std::string>& keywo
 
 	std::istringstream i{ inLine };
 	std::ostringstream o;
-	bool tag = false;
 
 	auto lastIdx = i.tellg();
-	while (i >> word)
+	int lookAhead = i.peek();
+	while (lookAhead != EOF)
 	{
-		//cout << i.tellg() - lastIdx << " " << (i.tellg() - lastIdx) - word.length() << endl;
-		//ajouter les char manquant
-		o << inLine.substr(lastIdx, (i.tellg() - lastIdx) - word.length());
-		if (keywords.find(word) != end(keywords))
+		if ((lookAhead >= 'a' && lookAhead <= 'z') || (lookAhead >= 'A' && lookAhead <= 'Z') || (lookAhead >= '0' && lookAhead <= '9') || lookAhead == '_')
 		{
-			o << spanOpen << word << spanClose;
+			word.push_back(i.get());
 		}
 		else
 		{
-			o << word;
-		}
-		lastIdx = i.tellg();
-	}
-	o << '\n';
+			if (keywords.count(word)==1)
+			{
+				o << spanOpen << word << spanClose;
+			}
+			else
+			{
+				o << word;
+			}
+			word.clear();
 
+			while (!(lookAhead >= 'a' && lookAhead <= 'z') && !(lookAhead >= 'A' && lookAhead <= 'Z') && !(lookAhead >= '0' && lookAhead <= '9') && lookAhead != '_' && lookAhead != EOF)
+			{
+				word.push_back(i.get());
+				lookAhead = i.peek();
+			}
+			o << word;
+			word.clear();
+		}
+		lookAhead = i.peek();
+	}
+
+	o << '\n';
+	//std::cout << o.str();
 	//totalT2 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
 	return o.str();
 }
 
 //TODO: a refaire
+////milliseconds totalT3 = milliseconds{ 0 };
+//std::string t3(std::string& inFile)
+//{
+//	//auto before = chrono::high_resolution_clock::now();
+//
+//	std::string spanOpen = "<span id=\"t3\">";
+//	std::string spanClose = "</span>";
+//	for (std::string::size_type i = 0; (i = inFile.find("//", i)) != std::string::npos;)
+//	{
+//		inFile.insert(i, spanOpen);
+//		i += spanOpen.length();
+//		auto end = inFile.find("\n", i);
+//		i = end;
+//		inFile.insert(end + 1, spanClose);
+//		i += spanClose.length();
+//	}
+//	for (std::string::size_type i = 0; (i = inFile.find("/*", i)) != std::string::npos;)
+//	{
+//		inFile.insert(i, spanOpen);
+//		i += spanOpen.length();
+//		auto end = inFile.find("*/", i);
+//		i = end;
+//		inFile.insert(end + 2, spanClose);
+//		i += spanClose.length();
+//	}
+//
+//
+//	//totalT3 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
+//	return inFile;
+//}
 //milliseconds totalT3 = milliseconds{ 0 };
 std::string t3(std::string& inFile)
 {
@@ -176,6 +164,56 @@ std::string t3(std::string& inFile)
 
 	std::string spanOpen = "<span id=\"t3\">";
 	std::string spanClose = "</span>";
+
+	std::string word;
+	std::istringstream i{ inFile };
+	std::ostringstream o;
+	int lookAhead = i.peek();
+
+	while (lookAhead != EOF)
+	{
+		while (lookAhead != '/' && lookAhead != EOF)
+		{
+			word.push_back(i.get());
+			lookAhead = i.peek();
+		}
+		o << word;
+		word.clear();
+		word.push_back(i.get());
+		lookAhead = i.peek();
+
+		if (lookAhead == '/')
+		{
+			word = spanOpen + word;
+			while (lookAhead != '\n' && lookAhead != EOF)
+			{
+				word.push_back(i.get());
+				lookAhead = i.peek();
+			}
+			word += spanClose;
+			o << word;
+			word.clear();
+		}
+		else if (lookAhead == '*')
+		{
+			word = spanOpen + word;
+			while (lookAhead != '/' && lookAhead != EOF)
+			{
+				if (word.back() == '*')
+				{
+					word.push_back(i.get());
+					break;
+				}
+				word.push_back(i.get());
+				lookAhead = i.peek();
+			}
+			word += spanClose;
+			o << word;
+			word.clear();
+		}
+		lookAhead = i.peek();
+	}
+
 	for (std::string::size_type i = 0; (i = inFile.find("//", i)) != std::string::npos;)
 	{
 		inFile.insert(i, spanOpen);

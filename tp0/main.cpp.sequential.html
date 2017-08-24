@@ -30,7 +30,7 @@
 <span id="t2">using</span> <span id="t2">namespace</span> std;
 <span id="t2">using</span> <span id="t2">namespace</span> chrono;
 
-<span id="t2">int</span> main(int argc, <span id="t2">const</span> <span id="t2">char</span> * argv[])
+<span id="t2">int</span> main(<span id="t2">int</span> argc, <span id="t2">const</span> <span id="t2">char</span> * argv[])
 {
 	<span id="t3">//FIXME remplacer par un <span id="t2">enum</span>
 </span>	<span id="t2">const</span> <span id="t2">int</span> nbStep = 6;
@@ -55,12 +55,12 @@
 	<span id="t3">//Traitement sequentiel
 </span>
 	high_resolution_clock::time_point before, after;
-	<span id="t2">for</span> (int j = 0; j &lt numberOfRepeat; ++j)
+	<span id="t2">for</span> (<span id="t2">int</span> j = 0; j &lt numberOfRepeat; ++j)
 	{
 		before = high_resolution_clock::now();
 
-		<span id="t2">for</span> (int i = 0; i &lt numberOfFiles; ++i)
-			t5(fname, t4(t3(t2(t1(t0(fname)), keywords))), false);
+		<span id="t2">for</span> (<span id="t2">int</span> i = 0; i &lt numberOfFiles; ++i)
+			t5(fname, t4(t3(t2(t1(t0(fname)), keywords))), <span id="t2">false</span>);
 
 		after = high_resolution_clock::now();
 		cout &lt&lt "total" &lt&lt j + 1 &lt&lt ": " &lt&lt duration_cast&ltmilliseconds&gt(after - before).count() &lt&lt endl;
@@ -68,13 +68,14 @@
 
 	<span id="t3">//Traitement parallele
 </span>	<span id="t3">//TODO: to finish
-</span>	<span id="t3">//vector&ltstring&gt filenames(numberOfRepeat, fname);
-</span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[0], zoneTransit[1]), [](string fName) -&gt string { <span id="t2">return</span> t0(fName); }));
+</span>	vector&ltstring&gt filenames(numberOfRepeat, fname);
+	<span id="t3">/*
+	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[0], zoneTransit[1]), [](string fName) -&gt string { <span id="t2">return</span> t0(fName); }));
 </span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[1], zoneTransit[2]), [](string data) -&gt string { <span id="t2">return</span> t1(data); }));
 </span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[2], zoneTransit[3]), [&ampkeywords](string data) -&gt string { <span id="t2">return</span> t2(data, keywords); }));
 </span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[3], zoneTransit[4]), [](string data) -&gt string { <span id="t2">return</span> t3(data); }));
 </span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[4], zoneTransit[5]), [](string data) -&gt string { <span id="t2">return</span> t4(data); }));
-</span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[5], zoneTransit[6]), [](string data) { <span id="t2">return</span> t5("test.html", data, true); }));
+</span>	<span id="t3">//threads.emplace_back(thread(Pipeline(zoneTransit[5], zoneTransit[6]), [](string data) { <span id="t2">return</span> t5("test.html", data, <span id="t2">true</span>); }));
 </span>
 	<span id="t3">//for_each(begin(threads), end(threads), [](thread t) { t.join(); });
 </span>
@@ -83,10 +84,11 @@
 </span>	<span id="t3">//cout &lt&lt "t2 " &lt&lt totalT2.count() &lt&lt endl;
 </span>	<span id="t3">//cout &lt&lt "t3 " &lt&lt totalT3.count() &lt&lt endl;
 </span>	<span id="t3">//cout &lt&lt "t4 " &lt&lt totalT4.count() &lt&lt endl;
-</span>	<span id="t3">//cout &lt&lt "t5 " &lt&lt totalT5.count() &lt&lt endl;
+</span>	<span id="t3">//cout &lt&lt "t5 " &lt&lt totalT5.count() &lt&lt endl;*/</span>
 </span>	<span id="t2">char</span> a;
 	cin &gt&gt a;
 }
+
 </pre>
 </body>
 </html>

@@ -62,9 +62,10 @@ int main(int argc, const char * argv[])
 	//Traitement parallele
 	//TODO: to finish
 	vector<string> filenames(numberOfRepeat, fname);
-	threads.emplace_back(thread(Pipeline(zoneTransit[0], zoneTransit[1]), [](string fName) -> string { return t0(fName); }));
-	threads.emplace_back(thread(Pipeline(zoneTransit[1], zoneTransit[2]), [](string data) -> string { return t1(data); }));
-	threads.emplace_back(thread(Pipeline(zoneTransit[2], zoneTransit[3]), [&keywords](string data) -> string { return t2(data, keywords); }));
+	/*
+	//threads.emplace_back(thread(Pipeline(zoneTransit[0], zoneTransit[1]), [](string fName) -> string { return t0(fName); }));
+	//threads.emplace_back(thread(Pipeline(zoneTransit[1], zoneTransit[2]), [](string data) -> string { return t1(data); }));
+	//threads.emplace_back(thread(Pipeline(zoneTransit[2], zoneTransit[3]), [&keywords](string data) -> string { return t2(data, keywords); }));
 	//threads.emplace_back(thread(Pipeline(zoneTransit[3], zoneTransit[4]), [](string data) -> string { return t3(data); }));
 	//threads.emplace_back(thread(Pipeline(zoneTransit[4], zoneTransit[5]), [](string data) -> string { return t4(data); }));
 	//threads.emplace_back(thread(Pipeline(zoneTransit[5], zoneTransit[6]), [](string data) { return t5("test.html", data, true); }));
@@ -76,7 +77,7 @@ int main(int argc, const char * argv[])
 	//cout << "t2 " << totalT2.count() << endl;
 	//cout << "t3 " << totalT3.count() << endl;
 	//cout << "t4 " << totalT4.count() << endl;
-	//cout << "t5 " << totalT5.count() << endl;
+	//cout << "t5 " << totalT5.count() << endl;*/
 	char a;
 	cin >> a;
 }
