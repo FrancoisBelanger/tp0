@@ -4,7 +4,7 @@
 //  transform.h
 //  tp0
 //
-//  Created by François Bélanger on 17-05-15.
+//  Created by François Bélanger.
 //  Copyright © 2017. All rights reserved.
 //
 
@@ -13,17 +13,7 @@
 
 #include <fstream>
 #include <sstream>
-//FIXME dev test
-//#include <set>
 #include <unordered_set>
-
-//FIXME dev test
-//#define KEYWORDS std::set<std::string> keywords = { "alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "atomic_commit", "atomic_noexcept", "auto", "bitand", "bitor", "bool", "break", "case",\
-//"catch", "char", "char16_t", "char32_t", "class", "compl", "concept", "const", "constexpr", "const_cast", "continue", "decltype", "default", "delete", "do", "double", "dynamic_cast", "else",\
-//"enum", "explicit", "export", "extern", "false", "float", "for", "friend", "goto", "if", "inline", "int", "import", "long", "module", "mutable", "namespace", "new", "noexcept", "not", "not_eq",\
-//"nullptr", "operator", "or", "or_eq", "private", "protected", "public", "register", "reinterpret_cast", "requires", "return", "short", "unsigned", "signed", "sizeof", "static", "static_assert",\
-//"static_cast", "struct", "switch", "synchronized", "template", "this", "thread_local", "throw", "true", "try", "typedef", "typeid", "typename", "union", "using", "virtual", "void", "volatile",\
-//"wchar_t", "while", "xor", "xor_eq" };
 
 #define KEYWORDS std::unordered_set<std::string> keywords = { "alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "atomic_commit", "atomic_noexcept", "auto", "bitand", "bitor", "bool", "break", "case",\
 "catch", "char", "char16_t", "char32_t", "class", "compl", "concept", "const", "constexpr", "const_cast", "continue", "decltype", "default", "delete", "do", "double", "dynamic_cast", "else",\
@@ -32,17 +22,14 @@
 "static_cast", "struct", "switch", "synchronized", "template", "this", "thread_local", "throw", "true", "try", "typedef", "typeid", "typename", "union", "using", "virtual", "void", "volatile",\
 "wchar_t", "while", "xor", "xor_eq" }
 
-//TODO: passer au memory map
 //milliseconds totalT0 = milliseconds{ 0 };
-std::string t0(const std::string fname)
+std::string t0_(const std::string fname, std::stringstream&& ss)
 {
 	//auto before = chrono::high_resolution_clock::now();
 	std::ifstream file{ fname };
-	std::stringstream ss;
 	std::string line;
 	std::string backslach_n{ '\n' };
 
-	//TODO a reactiver
 	//ss << fname << backslach_n;
 	//TODO: fbr utiliser des iterateurs de stream
 	while (getline(file, line))
@@ -52,13 +39,22 @@ std::string t0(const std::string fname)
 	return ss.str();
 }
 
+std::string t0_seq(const std::string& fname)
+{
+	return t0_(fname, std::move(std::stringstream{fname + " 0\n"}));
+}
+
+std::string t0_par(const std::string& fname)
+{
+	return t0_(fname, std::stringstream{ fname + " 1\n" });
+}
+
 //TODO: passer par mouvement?
 //TODO: retour par mouvement?
 //milliseconds totalT1 = milliseconds{ 0 };
 std::string t1(std::string& toClean)
 {
 	//auto before = chrono::high_resolution_clock::now();
-	//TODO: a remanier.
 	std::ostringstream out;
 	std::string amp{"&amp"};
 	std::string less{"&lt"};
@@ -121,86 +117,17 @@ std::string t2(std::string& inLine, const std::unordered_set<std::string>& keywo
 	}
 
 	o << '\n';
-	//std::cout << o.str();
 	//totalT2 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
 	return o.str();
 }
 
-//TODO: a refaire
 //milliseconds totalT3 = milliseconds{ 0 };
 std::string t3(std::string& inFile)
 {
-	//auto before = chrono::high_resolution_clock::now();
-
-	//std::string spanOpen = "<span id=\"t3\">";
-	//std::string spanClose = "</span>";
-
-	//std::string word;
-	//std::istringstream i{ inFile };
-	//std::ostringstream o;
-	//int lookAhead = i.peek();
-
-	//while (lookAhead != EOF)
-	//{
-	//	while (lookAhead != '/' && lookAhead != EOF)
-	//	{
-	//		word.push_back(i.get());
-	//		lookAhead = i.peek();
-	//	}
-	//	o << word;
-	//	word.clear();
-	//	word.push_back(i.get());
-	//	lookAhead = i.peek();
-
-	//	if (lookAhead == '/')
-	//	{
-	//		word = spanOpen + word;
-	//		while (lookAhead != '\n' && lookAhead != EOF)
-	//		{
-	//			word.push_back(i.get());
-	//			lookAhead = i.peek();
-	//		}
-	//		word += spanClose;
-	//		o << word;
-	//		word.clear();
-	//	}
-	//	else if (lookAhead == '*')
-	//	{
-	//		word = spanOpen + word;
-	//		while (lookAhead != '/' && lookAhead != EOF)
-	//		{
-	//			if (word.back() == '*')
-	//			{
-	//				word.push_back(i.get());
-	//				break;
-	//			}
-	//			word.push_back(i.get());
-	//			lookAhead = i.peek();
-	//		}
-	//		word += spanClose;
-	//		o << word;
-	//		word.clear();
-	//	}
-	//	lookAhead = i.peek();
-	//}
-
-	size_t curPos = 0;
-	size_t linePos =0,lineEnd = 0, blockPos = 0, blockEnd = inFile.find("*/", blockPos);
-
+	std::string spanOpen = "<span id=\"t3\">";
+	std::string spanClose = "</span>";
 	for (std::string::size_type i = 0; (i = inFile.find("//", i)) != std::string::npos;)
 	{
-		if (curPos >= linePos)
-		{
-			linePos = inFile.find("//", curPos);
-			inFile.find("\n", linePos);
-		}
-
-		if (curPos >= blockPos)
-		{
-			blockPos = inFile.find("/*", curPos);
-			blockEnd = inFile.find("*/", curPos);
-		}
-
 		inFile.insert(i, spanOpen);
 		i += spanOpen.length();
 		auto end = inFile.find("\n", i);
@@ -217,19 +144,15 @@ std::string t3(std::string& inFile)
 		inFile.insert(end + 2, spanClose);
 		i += spanClose.length();
 	}
-
-
-	//totalT3 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
 	return inFile;
 }
 
-//TODO: a refaire
 //milliseconds totalT4 = milliseconds{ 0 };
 std::string t4(std::string& inFile)
 {
 	//auto before = chrono::high_resolution_clock::now();
 
-	std::string spanOpen = "<span style = 'color:purple'>";
+	std::string spanOpen = "<span id=\"t4\">";
 	std::string spanClose = "</span>";
 	for (std::string::size_type i = 0; (i = inFile.find("#", i)) != std::string::npos;)
 	{
@@ -246,35 +169,40 @@ std::string t4(std::string& inFile)
 }
 
 
-//FIXME dev test
-//#define HEADER_1 std::string{"<!DOCTYPE html>\n<html>\n<head>\n<title>"}
-//#define HEADER_2 std::string{"</title>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"tp0.css\">\n</head>\n<body>\n<pre>"}
-//#define FOOTER std::string{"</pre>\n</body>\n</html>"}
-std::string HEADER_1{ "<!DOCTYPE html>\n<html>\n<head>\n<title>" };
-std::string	HEADER_2{ "</title>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"tp0.css\">\n</head>\n<body>\n<pre>" };
-std::string FOOTER{"</pre>\n</body>\n</html>"};
 //TODO: faire le menage dans les parametres
 //milliseconds totalT5 = milliseconds{ 0 };
-void t5(const std::string& fname, const std::string& data, bool concurrent)
+std::string t5(const std::string& data)
 {
 	//auto before = chrono::high_resolution_clock::now();
-	std::ofstream file{ fname + (concurrent ? ".parallele.html" : ".sequential.html") };
+	std::string HEADER_1{ "<!DOCTYPE html>\n<html>\n<head>\n<title>" };
+	std::string	HEADER_2{ "</title>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"tp0.css\">\n</head>\n<body>\n<pre>" };
+	std::string FOOTER{ "</pre>\n</body>\n</html>" };
+
+	std::string fname;
+
+	std::string::size_type i = 0;
+	for (; data[i] != ' '; ++i)
+	{
+		fname.push_back(data[i]);
+	}
+	i++;
+	std::string seq{data[i]};
+	i+=2;
+
+	std::ofstream file{ fname + (seq == "0" ? ".sequential.html": ".parallele.html") };
 
 	//header
-	//file << "<!DOCTYPE html>\n<html>\n<head>\n";
-	//file << "<title>" << fname << "</title>\n";
-	//file << "<link rel=\"stylesheet\" type=\"text/css\" href=\"tp0.css\">\n";
-	//file << "</head>\n<body>\n<pre>";
 	file << HEADER_1;
 	file << fname << HEADER_2;
 
 	//decorated lines
-	file << data;
+	file << data.substr(i);
 
 	//end tag
 	file << FOOTER;
 
 	//totalT5 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
+	return std::string{ "" };
 }
 
 #endif // !_TRANSFORM_H_

@@ -143,7 +143,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="zone_transit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pipeline.h" />

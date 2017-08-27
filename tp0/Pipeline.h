@@ -11,67 +11,87 @@
 #ifndef _PIPELINE_H_
 #define _PIPELINE_H_
 
+#include <mutex>
+#include <condition_variable>
 #include "zone_transit.h"
-
-//FIXME to rename
-//FIXME to integrate
-class BeginThread
-{
-	ZoneTransit& next;
-
-public:
-
-	BeginThread(ZoneTransit& next)
-		: next(next)
-	{}
-
-	template<class F>
-	void operator()(F f)
-	{
-		//for (int fileIndex = 0; fileIndex < nbFiles; ++fileIndex)
-		{
-			next.enqueue(f(fileIndex));
-		}
-	}
-};
 
 class Pipeline
 {
+protected:
 	//int nbFiles;
 	ZoneTransit& prev;
 	ZoneTransit& next;
+	size_t nbFiles;
 
 public:
-	Pipeline(ZoneTransit& prev, ZoneTransit& next): prev(prev) ,next(next){}
+	Pipeline(size_t nb, ZoneTransit& prev, ZoneTransit& next): nbFiles(nb), prev(prev) ,next(next){}
 
 	template<class F>
 	void operator() (F f)
 	{
-		next.enqueue(f(prev.deque()));
+		//for (size_t i = 0; i < nbFiles; ++i)
+		if (!prev.is_done())
+			next.enqueue(f(prev.deque()));
+		else
+			next.terminate();
 	}
 
 
 }; //struct Pipeline
 
-//FIXME to rename
-//FIXME to integrate
-class EndThread
+class PipelineEntry
 {
-	ZoneTransit& prev;
+	size_t nbFiles;
+	ZoneTransit& next;
+	std::mutex& mut;
+	std::condition_variable& cv;
 
 public:
 
-	EndThread(ZoneTransit& prev)
-		: prev(prev)
+	PipelineEntry(size_t nb, ZoneTransit& next, std::condition_variable& cv, std::mutex& mut)
+		:nbFiles(nb)
+		, next(next)
+		, cv(cv)
+		, mut(mut)
 	{}
 
 	template<class F>
 	void operator()(F f)
 	{
-		for (int fileIndex = 0; fileIndex < nbFiles; ++fileIndex)
+		unique_lock<mutex> token(mut);
+		cv.wait(token);
+
+		for (int i = 0; i < nbFiles; ++i)
 		{
-			f(fileIndex, prev.get());
+			next.enqueue(f(i));
 		}
+
+		next.terminate();
+	}
+};
+
+//FIXME to rename
+//FIXME to integrate
+class PipelineExit
+{
+	ZoneTransit& prev;
+	size_t nbFiles;
+
+public:
+
+	PipelineExit(size_t nb, ZoneTransit& prev)
+		: prev(prev)
+		, nbFiles(nb)
+	{}
+
+	template<class F>
+	void operator()(F f)
+	{
+		//for (size_t i = 0; i < nbFiles; ++i)
+		if (!prev.is_done())
+			f(prev.deque());
+		//else
+		//	terminate();
 	}
 };
 #endif //_PIPELINE_H
