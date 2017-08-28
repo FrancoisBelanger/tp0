@@ -23,15 +23,16 @@
 "wchar_t", "while", "xor", "xor_eq" }
 
 //milliseconds totalT0 = milliseconds{ 0 };
-std::string t0_(const std::string fname, std::stringstream&& ss)
+std::string t0_(const std::string fname, bool seq)
 {
 	//auto before = chrono::high_resolution_clock::now();
+	std::ostringstream ss;
 	std::ifstream file{ fname };
 	std::string line;
 	std::string backslach_n{ '\n' };
 
-	//ss << fname << backslach_n;
-	//TODO: fbr utiliser des iterateurs de stream
+	ss << fname << " " << (seq ? "0" : "1") << backslach_n;
+
 	while (getline(file, line))
 		ss << line << backslach_n;
 
@@ -41,16 +42,14 @@ std::string t0_(const std::string fname, std::stringstream&& ss)
 
 std::string t0_seq(const std::string& fname)
 {
-	return t0_(fname, std::move(std::stringstream{fname + " 0\n"}));
+	return t0_(fname, true);
 }
 
 std::string t0_par(const std::string& fname)
 {
-	return t0_(fname, std::stringstream{ fname + " 1\n" });
+	return t0_(fname, false);
 }
 
-//TODO: passer par mouvement?
-//TODO: retour par mouvement?
 //milliseconds totalT1 = milliseconds{ 0 };
 std::string t1(std::string& toClean)
 {
@@ -168,8 +167,6 @@ std::string t4(std::string& inFile)
 	return inFile;
 }
 
-
-//TODO: faire le menage dans les parametres
 //milliseconds totalT5 = milliseconds{ 0 };
 std::string t5(const std::string& data)
 {
@@ -202,7 +199,7 @@ std::string t5(const std::string& data)
 	file << FOOTER;
 
 	//totalT5 += duration_cast<milliseconds>(high_resolution_clock::now() - before);
-	return std::string{ "" };
+	return std::string{ "" }; //pour unifier avec les autres stransformations
 }
 
 #endif // !_TRANSFORM_H_

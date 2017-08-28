@@ -27,7 +27,7 @@ int main(int argc, const char * argv[])
 {
 	//FIXME remplacer par un enum
 	const int nbStep = 6;
-	int numberOfRepeat = 1;
+	int numberOfRepeat = 10;
 	int numberOfFiles = 1000;
 	string fname = "main.cpp";
 	vector<thread> threads;
@@ -50,42 +50,43 @@ int main(int argc, const char * argv[])
 	//Traitement sequentiel
 
 	high_resolution_clock::time_point before, after;
-	//for (int j = 0; j < numberOfRepeat; ++j)
-	//{
-	//	before = high_resolution_clock::now();
-
-	//	for (int i = 0; i < numberOfFiles; ++i)
-	//		t5(t4(t3(t2(t1(t0_seq(fname)), keywords))));
-
-	//	after = high_resolution_clock::now();
-	//	cout << "total" << j + 1 << ": " << duration_cast<milliseconds>(after - before).count() << endl;
-	//}
-
-	//Traitement parallele
-	//TODO: to finish
-	vector<string> filenames(numberOfRepeat, fname);
-	
-	//threads.emplace_back(thread(Pipeline(zoneTransit[0], zoneTransit[1]), [](string fName) -> string { return t0_seq(fName); }));
-	//threads.emplace_back(thread(Pipeline(zoneTransit[0], zoneTransit[1]), [&filenames](int index) -> string { return t0_seq(filenames[index]); }));
-	threads.emplace_back(thread(PipelineEntry(filenames.size(), zoneTransit[0], cv, mut), [&filenames](int index) -> string { return t0_par(filenames[index]); }));
-	threads.emplace_back(thread(Pipeline(filenames.size(), zoneTransit[0], zoneTransit[1]), [](string data) -> string { return t1(data); }));
-	threads.emplace_back(thread(Pipeline(filenames.size(), zoneTransit[1], zoneTransit[2]), [&keywords](string data) -> string { return t2(data, keywords); }));
-	threads.emplace_back(thread(Pipeline(filenames.size(), zoneTransit[2], zoneTransit[3]), [](string data) -> string { return t3(data); }));
-	threads.emplace_back(thread(Pipeline(filenames.size(), zoneTransit[3], zoneTransit[4]), [](string data) -> string { return t4(data); }));
-	//threads.emplace_back(thread(Pipeline(zoneTransit[5], zoneTransit[6]), [](string data) { return t5(data); }));
-	threads.emplace_back(thread(PipelineExit(filenames.size(), zoneTransit[4]), [](string data) { return t5(data); }));
-
-	before = high_resolution_clock::now();
-	cv.notify_one();
-	for (auto &th : threads)
+	for (int j = 0; j < numberOfRepeat; ++j)
 	{
-		th.join();
+		before = high_resolution_clock::now();
+
+		for (int i = 0; i < numberOfFiles; ++i)
+			t5(t4(t3(t2(t1(t0_seq(fname)), keywords))));
+
+		after = high_resolution_clock::now();
+		cout << "total seq " << j + 1 << ": " << duration_cast<milliseconds>(after - before).count() << endl;
 	}
 
-	after = high_resolution_clock::now();
-	cout << "total parallel" << ": " << duration_cast<milliseconds>(after - before).count() << endl;
+	cout << endl;
 
-	//cout << "t0 " << totalT0.count() << endl;
+	//Traitement parallele	
+	vector<string> filenames(numberOfFiles, fname);
+	for (int j = 0; j < numberOfRepeat; ++j)
+	{
+		threads.emplace_back(thread(PipelineEntry(filenames.size(), zoneTransit[0], cv, mut), [&filenames](int index) -> string { return t0_par(filenames[index]); }));
+		threads.emplace_back(thread(Pipeline(filenames.size(), zoneTransit[0], zoneTransit[1]), [](string data) -> string { return t1(data); }));
+		threads.emplace_back(thread(Pipeline(filenames.size(), zoneTransit[1], zoneTransit[2]), [&keywords](string data) -> string { return t2(data, keywords); }));
+		threads.emplace_back(thread(Pipeline(filenames.size(), zoneTransit[2], zoneTransit[3]), [](string data) -> string { return t3(data); }));
+		threads.emplace_back(thread(Pipeline(filenames.size(), zoneTransit[3], zoneTransit[4]), [](string data) -> string { return t4(data); }));
+		threads.emplace_back(thread(PipelineExit(filenames.size(), zoneTransit[4]), [](string data) { return t5(data); }));
+
+		before = high_resolution_clock::now();
+		cv.notify_one();
+		for (auto &th : threads)
+		{
+			th.join();
+		}
+
+		after = high_resolution_clock::now();
+		cout << "total parallel " << j << ": " << duration_cast<milliseconds>(after - before).count() << endl;
+		threads.clear();
+	}
+
+	/*cout << "t0 " << totalT0.count() << endl;
 	//cout << "t1 " << totalT1.count() << endl;
 	//cout << "t2 " << totalT2.count() << endl;
 	//cout << "t3 " << totalT3.count() << endl;

@@ -70,8 +70,7 @@ public:
 	}
 };
 
-//FIXME to rename
-//FIXME to integrate
+
 class PipelineExit
 {
 	ZoneTransit& prev;

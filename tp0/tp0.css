@@ -1,4 +1,12 @@
-﻿#t2 {
+﻿#t3> #t2{
+	color:green
+}
+
+#t3 > #t4{
+	color:green
+}
+
+#t2 {
     color:blue
 }
 
@@ -9,4 +17,3 @@
 #t4{
     color:purple
 }
-
